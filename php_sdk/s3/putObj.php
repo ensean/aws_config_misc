@@ -9,6 +9,7 @@ use Aws\Exception\AwsException;
 $s3Client = new S3Client([
     'version'     => 'latest',
     'region'      => 'ap-northeast-1',  // 匹配桶所在区域
+    // 'use_accelerate_endpoint' => true,  // 使用S3传输加速功能，需要先在S3界面开启
     'credentials' => [
         'key'    => 'ak',   // 后台用户ak，该用户需要有S3桶访问权限
         'secret' => 'sk',   // 后台用户sk
