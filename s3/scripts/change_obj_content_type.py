@@ -17,7 +17,7 @@ def lambda_handler(event, context):
         CopySource={"Bucket": bucket_name, "Key": obj_key},
         Metadata={"src": "dth"},
         MetadataDirective="REPLACE",
-        ContentType="image/jpeg",
+        ContentType="image/png",
     )
 
     return {
