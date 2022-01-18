@@ -54,7 +54,7 @@ def send_alarm_to_sns(alarm):
     alarm = field_adjust(alarm)
     sns_client.publish(
         TopicArn=sns_topic_arn,
-        Message=json.dumps(alarm, indent=4, default=default_seira, ensure_ascii=False)
+        Message=json.dumps(alarm, indent=2, default=default_seira, ensure_ascii=False)
     )
 
 def field_adjust(alarm):
@@ -71,7 +71,7 @@ def field_adjust(alarm):
 
 def main():
     info = get_alarm('rds cpu high超过20%')
-    print(json.dumps(info, indent=4, default=default_seira,ensure_ascii=False))
+    print(json.dumps(info, indent=2, default=default_seira,ensure_ascii=False))
 
 if __name__ == '__main__':
     main()
