@@ -48,12 +48,12 @@ def process_alarm(alarm):
 def send_alarm_to_sns(alarm):
     sns_client.publish(
         TopicArn=sns_topic_arn,
-        Message=json.dumps(alarm, indent=4, default=default_seira)
+        Message=json.dumps(alarm, indent=4, default=default_seira, ensure_ascii=False)
     )
 
 def main():
-    info = get_alarm('rds cpu high')
-    print(json.dumps(info, indent=4, default=default_seira))
+    info = get_alarm('rds cpu high超过20%')
+    print(json.dumps(info, indent=4, default=default_seira,ensure_ascii=False))
 
 if __name__ == '__main__':
     main()
