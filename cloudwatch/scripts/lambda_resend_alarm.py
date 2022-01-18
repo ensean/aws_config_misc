@@ -8,6 +8,11 @@ cw_client = boto3.client('cloudwatch')
 sns_client =boto3.client('sns')
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
+
+REGION_MAP = {
+    'ap-northeast-1': 'Asia Pacific (Tokyo)',
+    'ap-southeast-1': 'Asia Pacific (Singapore)'
+}
 # get alarm list from env var
 target_alarm_list = os.environ.get('target_alarm_list', '').strip()
 sns_topic_arn = os.environ.get('sns_topic_arn', '').strip()
@@ -46,10 +51,23 @@ def process_alarm(alarm):
         send_alarm_to_sns(alarm)
 
 def send_alarm_to_sns(alarm):
+    alarm = field_adjust(alarm)
     sns_client.publish(
         TopicArn=sns_topic_arn,
         Message=json.dumps(alarm, indent=4, default=default_seira, ensure_ascii=False)
     )
+
+def field_adjust(alarm):
+    # 字段校正以便sns下游能够正常识别，此处以caweb http hook
+    region_code = os.environ.get('AWS_REGION')
+    alarm['Region'] = REGION_MAP.get(region_code, 'unknown region')    # 设置区域
+    alarm['NewStateReason'] = alarm['StateReason']  # 设置告警信息
+    alarm['Dimensions'][0] = {
+        "name": alarm['Dimensions'][0].get("Name"),
+        "value": alarm['Dimensions'][0].get("Value")
+    }
+    return alarm
+    
 
 def main():
     info = get_alarm('rds cpu high超过20%')
