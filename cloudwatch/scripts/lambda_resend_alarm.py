@@ -62,10 +62,11 @@ def field_adjust(alarm):
     region_code = os.environ.get('AWS_REGION')
     alarm['Region'] = REGION_MAP.get(region_code, 'unknown region')    # 设置区域
     alarm['NewStateReason'] = alarm['StateReason']  # 设置告警信息
-    alarm['Dimensions'][0] = {
-        "name": alarm['Dimensions'][0].get("Name"),
-        "value": alarm['Dimensions'][0].get("Value")
-    }
+    if len(alarm['Dimensions']) > 0:
+        alarm['Dimensions'][0] = {
+            "name": alarm['Dimensions'][0].get("Name"),
+            "value": alarm['Dimensions'][0].get("Value")
+        }
     return alarm
     
 
