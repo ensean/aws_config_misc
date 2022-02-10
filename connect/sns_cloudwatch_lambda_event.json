@@ -1,0 +1,22 @@
+{
+    "Records": [
+        {
+            "EventSource": "aws:sns",
+            "EventVersion": "1.0",
+            "EventSubscriptionArn": "arn:aws:sns:ap-northeast-1:123456789123:Default_CloudWatch_Alarms_Topic:aff7a53f-aedc-4991-8092-ea253b297c13",
+            "Sns": {
+                "Type": "Notification",
+                "MessageId": "73d39480-8df4-5cc8-a7e2-ceffbd778f7a",
+                "TopicArn": "arn:aws:sns:ap-northeast-1:123456789123:Default_CloudWatch_Alarms_Topic",
+                "Subject": "ALARM: \"RDSCPU_\" in Asia Pacific (Tokyo)",
+                "Message": "{\"AlarmName\":\"RDSCPU使用率过低\",\"AlarmDescription\":\"RDSCPU使用率过低\",\"AWSAccountId\":\"123456789123\",\"AlarmConfigurationUpdatedTimestamp\":\"2022-02-10T15:24:23.659+0000\",\"NewStateValue\":\"ALARM\",\"NewStateReason\":\"Threshold Crossed: 1 out of the last 1 datapoints [6.916666666666666 (10/02/22 15:21:00)] was less than or equal to the threshold (10.0) (minimum 1 datapoint for OK -> ALARM transition).\",\"StateChangeTime\":\"2022-02-10T15:24:51.855+0000\",\"Region\":\"Asia Pacific (Tokyo)\",\"AlarmArn\":\"arn:aws:cloudwatch:ap-northeast-1:123456789123:alarm:RDSCPU使用率过低\",\"OldStateValue\":\"OK\",\"OKActions\":\"\",\"AlarmActions\":\"[arn:aws:sns:ap-northeast-1:123456789123:Default_CloudWatch_Alarms_Topic]\",\"InsufficientDataActions\":\"\",\"Trigger\":{\"MetricName\":\"CPUUtilization\",\"Namespace\":\"AWS/RDS\",\"StatisticType\":\"Statistic\",\"Statistic\":\"AVERAGE\",\"Unit\":null,\"Dimensions\":[{\"value\":\"database-1-instance-1\",\"name\":\"DBInstanceIdentifier\"}],\"Period\":60,\"EvaluationPeriods\":1,\"DatapointsToAlarm\":1,\"ComparisonOperator\":\"LessThanOrEqualToThreshold\",\"Threshold\":10.0,\"TreatMissingData\":\"missing\",\"EvaluateLowSampleCountPercentile\":\"\"}}",
+                "Timestamp": "2022-02-10T15:24:51.908Z",
+                "SignatureVersion": "1",
+                "Signature": "P8ZN/9HC7zX3UuBsHfOpdEqkERyIhqzeVdUQvh5xts+ULzDIofOE+SM6UpYbWBaQ2T6vFgsAvD8jz0CsWYjjoq4ozEUhmAWyfh9vwUP9HJbvBICz8nF39tAmjC431bfcTCxJSxlvul0lskrVILGtvv+uwjJTC8AERnwIMaNLI9Cs1RADje13lSSAdnUkuHFvqPzELfCcUkqr2DyFUU7G71+Qz7zoeDqTgYdIU40/D5Y/UoddYXHZxgBQCJLNXmsoAaCXbNeTr4oOgx6bRq3DR/dBTTlJSBM4S/U0n73hpXtwbr6xyLLCUg/AJYYiEgtDRfaUEp1ftVvOpzIVxre0Ow==",
+                "SigningCertUrl": "https://sns.ap-northeast-1.amazonaws.com/SimpleNotificationService-7ff5318490ec183fbaddaa2a969abfda.pem",
+                "UnsubscribeUrl": "https://sns.ap-northeast-1.amazonaws.com/?Action=Unsubscribe&SubscriptionArn=arn:aws:sns:ap-northeast-1:123456789123:Default_CloudWatch_Alarms_Topic:aff7a53f-aedc-4991-8092-ea253b297c13",
+                "MessageAttributes": {}
+            }
+        }
+    ]
+}
