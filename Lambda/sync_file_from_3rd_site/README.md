@@ -2,6 +2,9 @@
 #### 用途
 通过CloudFront origin group fallover功能，借助Lambda从第三方站点同步文件至S3桶，进而使[SIH](https://github.com/wchaws/serverless-image-handler)支持以第三方站点作为源站。
 
+架构图示意如下
+![](imgs/2022-04-11-09-31-25.png)
+
 #### 配置流程
 1. 参考[这里](https://docs.qq.com/doc/DV3ZVWEtTU0ZFWFpi)部署SIH x-oss-process版本
 
