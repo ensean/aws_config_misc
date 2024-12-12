@@ -1,6 +1,7 @@
 import boto3
 import json
 
+
 def search_place_index_for_suggestions(event, context):
     """
     Handles the SearchPlaceIndexForSuggestions API from AWS Location Service.
@@ -8,6 +9,8 @@ def search_place_index_for_suggestions(event, context):
     location = boto3.client('location')
     index_name = event['queryStringParameters'].get('index_name', '')
     text = event['queryStringParameters'].get('text', '')
+    language = event['queryStringParameters'].get('language', '')
+    filter_countries = event['queryStringParameters'].get('filter_countries', '').split(',') if event['queryStringParameters'].get('filter_countries', '') else []
     response = {
         "statusCode": 200,
         "statusDescription": "200 OK",
@@ -17,10 +20,17 @@ def search_place_index_for_suggestions(event, context):
         },
     }
     if index_name and text:
-        result = location.search_place_index_for_suggestions(
+        kwargs = dict(
             IndexName=index_name,
             MaxResults=5,
-            Text=text
+            Text=text,
+        )
+        if len(filter_countries) > 0:
+            kwargs['FilterCountries'] = filter_countries
+        if language:
+            kwargs['Language'] = language
+        result = location.search_place_index_for_suggestions(
+            **kwargs
         )
         # extract result from boto3 api call
         body = {
@@ -32,6 +42,7 @@ def search_place_index_for_suggestions(event, context):
         response['body'] = json.dumps({"msg": "invalid or missing parameters"})
     return response
 
+
 def get_place(event, context):
     """
     Handles the GetPlace API from AWS Location Service.
@@ -39,6 +50,7 @@ def get_place(event, context):
     location = boto3.client('location')
     index_name = event['queryStringParameters'].get('index_name', '')
     place_id = event['queryStringParameters'].get('place_id', '')
+    language = event['queryStringParameters'].get('language', '')
     response = {
         "statusCode": 200,
         "statusDescription": "200 OK",
@@ -48,9 +60,14 @@ def get_place(event, context):
         },
     }
     if index_name and place_id:
-        result = location.get_place(
+        kwargs = dict(
             IndexName=index_name,
             PlaceId=place_id
+        )
+        if language:
+            kwargs['Language'] = language
+        result = location.get_place(
+            **kwargs
         )
         body = {
             'Place': result['Place']
@@ -59,6 +76,7 @@ def get_place(event, context):
     else:
         response['body'] = json.dumps({"msg": "invalid or missing parameters"})
     return response
+
 
 def lambda_handler(event, context):
     if event['httpMethod'] == 'GET' and event['path'] == '/suggestions':
