@@ -64,9 +64,10 @@ def suggest_v2(event, context):
         kwargs = dict(
             MaxResults=int(max_results),
             QueryText=text,
+            BiasPosition=[139.7774201, 35.736716]
         )
         if len(filter_countries) > 0:
-            kwargs['Filter']['IncludeCountries'] = [filter_countries]
+            kwargs['Filter'] = {'IncludeCountries': filter_countries}
         if language:
             kwargs['Language'] = language
         result = geo_client.suggest(
@@ -116,6 +117,40 @@ def get_place(event, context):
     return response
 
 
+def get_place_v2(event, context):
+    """
+    latest api for amazon location service
+    """
+    geo_client = boto3.client('geo-places')
+    place_id = event['queryStringParameters'].get('place_id', '')
+    language = event['queryStringParameters'].get('language', '')
+    response = {
+        "statusCode": 200,
+        "statusDescription": "200 OK",
+        "isBase64Encoded": False,
+        "headers": {
+            "Content-Type": "application/json"
+        },
+    }
+    if place_id:
+        kwargs = dict(
+            PlaceId=place_id
+        )
+        if language:
+            kwargs['Language'] = language
+        result = geo_client.get_place(
+            **kwargs
+        )
+        body = {
+            'Place': result
+        }
+        response['body'] = json.dumps(body)
+    else:
+        response['body'] = json.dumps({"msg": "invalid or missing parameters"})
+    return response
+
+
+
 def lambda_handler(event, context):
     if event['httpMethod'] == 'GET' and event['path'] == '/suggestions':
         return search_place_index_for_suggestions(event, context)
@@ -123,5 +158,7 @@ def lambda_handler(event, context):
         return get_place(event, context)
     elif event['httpMethod'] == 'GET' and event['path'] == '/suggest_v2':
         return suggest_v2(event, context)
+    elif event['httpMethod'] == 'GET' and event['path'] == '/get_place_v2':
+        return get_place_v2(event, context)
     else:
         raise ValueError('Invalid operation specified')
