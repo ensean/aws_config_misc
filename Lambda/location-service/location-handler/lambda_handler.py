@@ -1,6 +1,13 @@
 import boto3
 import json
 
+BIAS_POS_DICT = {
+    'JPN': [139.7774201, 35.736716],
+    'USA': [-77.0368707, 38.9071923],
+    'GBR': [-0.1276474, 51.5073219],
+    'AUS': [151.2164539, -33.8548157],
+    'THA': [100.523186, 13.736717]
+}
 
 def search_place_index_for_suggestions(event, context):
     """
@@ -64,7 +71,8 @@ def suggest_v2(event, context):
         kwargs = dict(
             MaxResults=int(max_results),
             QueryText=text,
-            BiasPosition=[139.7774201, 35.736716]
+            BiasPosition=BIAS_POS_DICT.get(filter_countries[0]),
+            AdditionalFeatures=['Core']
         )
         if len(filter_countries) > 0:
             kwargs['Filter'] = {'IncludeCountries': filter_countries}
