@@ -157,7 +157,31 @@ def get_place_v2(event, context):
         response['body'] = json.dumps({"msg": "invalid or missing parameters"})
     return response
 
-
+def geocode(event, context):
+    """
+    latest api for amazon location service
+    """
+    geo_client = boto3.client('geo-places')
+    text = event['queryStringParameters'].get('text', '')
+    country = event['queryStringParameters'].get('country', '')
+    response = {
+        "statusCode": 200,
+        "statusDescription": "200 OK",
+        "isBase64Encoded": False,
+        "headers": {
+            "Content-Type": "application/json"
+        },
+    }
+    kwargs = dict(
+        QueryText=text,
+        Filter = {'IncludeCountries': [country]}
+    )
+    result = geo_client.geocode(
+        **kwargs
+    )
+    response['body'] = json.dumps(result)
+    
+    return response
 
 def lambda_handler(event, context):
     if event['httpMethod'] == 'GET' and event['path'] == '/suggestions':
@@ -168,5 +192,7 @@ def lambda_handler(event, context):
         return suggest_v2(event, context)
     elif event['httpMethod'] == 'GET' and event['path'] == '/get_place_v2':
         return get_place_v2(event, context)
+    elif event['httpMethod'] == 'GET' and event['path'] == '/geocode':
+        return geocode(event, context)
     else:
         raise ValueError('Invalid operation specified')
