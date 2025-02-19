@@ -1,5 +1,7 @@
 import boto3
 import json
+from urllib.parse import unquote
+
 
 BIAS_POS_DICT = {
     'JPN': [139.7774201, 35.736716],
@@ -65,6 +67,8 @@ def suggest_v2(event, context):
     """
     geo_client = boto3.client('geo-places')
     text = event['queryStringParameters'].get('text', '')
+    text = unquote(text)
+
     language = event['queryStringParameters'].get('language', '')
     max_results = event['queryStringParameters'].get('max_results', 5)
     filter_countries = event['queryStringParameters'].get('filter_countries', '').split(',') if event['queryStringParameters'].get('filter_countries', '') else []
@@ -172,6 +176,7 @@ def geocode(event, context):
     """
     geo_client = boto3.client('geo-places')
     text = event['queryStringParameters'].get('text', '')
+    text = unquote(text)    # url decode
     country = event['queryStringParameters'].get('country', '')
     response = {
         "statusCode": 200,
