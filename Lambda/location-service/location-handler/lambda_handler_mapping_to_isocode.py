@@ -66,13 +66,23 @@ def get_iso_code(event, context):
     for content in response['output']['message']['content']:
         if 'toolUse' in content.keys():
             return content['toolUse']['input']
-    # no msg extracted
-    return None
+    # no code extracted
+    return {"iso_code": "NA"}
 
 
 def lambda_handler(event, context):
     if event['httpMethod'] == 'GET' and event['path'] == '/iso_code':
-        return get_iso_code(event, context)
+        iso_code = get_iso_code(event, context)
+        response = {
+            "statusCode": 200,
+            "statusDescription": "200 OK",
+            "isBase64Encoded": False,
+            "headers": {
+                "Content-Type": "application/json"
+            },
+            'body': json.dumps(iso_code)
+        }
+        return response
     else:
         raise ValueError('Invalid operation specified')
 
