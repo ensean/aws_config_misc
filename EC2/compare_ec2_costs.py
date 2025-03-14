@@ -105,7 +105,7 @@ def main():
     
     # Print the comparison table
     print("\n=== On-Demand Hourly Price Comparison (USD) ===\n")
-    print(tabulate(table_data, headers=headers, tablefmt="grid"))
+    print(tabulate(table_data, headers=headers, tablefmt="github"))
     
     print(f"\nPricing information retrieved on: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     print("Note: Prices are in USD and do not include taxes or additional charges.")
