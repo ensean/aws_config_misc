@@ -93,12 +93,12 @@ def main():
             pricing_data[region][instance_type] = price
     
     # Prepare data for tabulation
-    headers = ["Region"] + instance_types
+    headers = ["Instance Type"] + regions
     table_data = []
     
-    for region in regions:
-        row = [region]
-        for instance_type in instance_types:
+    for instance_type in instance_types:
+        row = [instance_type]
+        for region in regions:
             price = pricing_data[region].get(instance_type)
             row.append(format_price(price))
         table_data.append(row)
